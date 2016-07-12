@@ -1,6 +1,44 @@
 (function(nacl) {
 'use strict';
 
+// polyfill for TypedArray.prototype.slice()
+Uint8Array.prototype.slice = function(start, end) {
+	var len = this.length;
+	var relativeStart = start;
+	var k = (relativeStart < 0) ? max(len + relativeStart, 0) : Math.min(relativeStart, len);
+	var relativeEnd = (end === undefined) ? len : end;
+	var final = (relativeEnd < 0) ? max(len + relativeEnd, 0) : Math.min(relativeEnd, len);
+	var count = final - k;
+	var c = this.constructor;
+	var a = new c(count);
+	var n = 0;
+	while (k < final) {
+	    a[n] = JSON.parse(JSON.stringify(this[k]));
+	    k++;
+	    n++;
+	}
+	return a;
+}
+
+
+Float64Array.prototype.slice = function(start, end) {
+	var len = this.length;
+	var relativeStart = start;
+	var k = (relativeStart < 0) ? max(len + relativeStart, 0) : Math.min(relativeStart, len);
+	var relativeEnd = (end === undefined) ? len : end;
+	var final = (relativeEnd < 0) ? max(len + relativeEnd, 0) : Math.min(relativeEnd, len);
+	var count = final - k;
+	var c = this.constructor;
+	var a = new c(count);
+	var n = 0;
+	while (k < final) {
+	    a[n] = JSON.parse(JSON.stringify(this[k]));
+	    k++;
+	    n++;
+	}
+	return a;
+}
+
 // Ported in 2014 by Dmitry Chestnykh and Devi Mandiri.
 // Public domain.
 //
